@@ -1,4 +1,4 @@
-{% extends 'rango/base.html' %}
+	{% extends 'rango/base.html' %}
 	{% load staticfiles %}
 	{% block title_block %}
 		Index
@@ -31,6 +31,7 @@
 				<div>
 					<div>
 						<h3>Most Viewed Pages</h3>	
+						<p>visits: {{ visits }}</p>
 					</div>
 	         	   {% if pages %}
 	             	<ul>

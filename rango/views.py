@@ -47,36 +47,25 @@ def visitor_cookie_handler(request):
 
 
 def index(request):
-    #context_dict = {'boldmessage': "Crunchie, creamy, cookie, candy, cupcake!"}
-    
-    request.session.set_test_cookie()
-    
     category_list = Category.objects.order_by('-likes')[:5]
-    
     page_list = Page.objects.order_by('-views')[:5]
-    
     context_dict = {'categories': category_list, 'pages': page_list}
-    
     visitor_cookie_handler(request)
-    
     context_dict['visits'] = request.session['visits']
-    
     print(request.session['visits'])
     
     response = render(request, 'rango/index.html', context=context_dict)
     
     return response
-    
 
 def about(request):
-    if request.session.test_cookie_worked():
-        print("TEST COOKIE WORKED!")
-        request.session.delete_test_cookie()
-    # To complete the exercise in chapter 4, we need to remove the following line
-    # return HttpResponse("Rango says here is the about page. <a href='/rango/'>View index page</a>")
+    visitor_cookie_handler(request)
+    context_dict['visits'] = request.session['visits']
+    response = render(request, 'rango/index.html', context=context_dict)
     
-    # and replace it with a pointer to ther about.html template using the render method
+    
     return render(request, 'rango/about.html',{})
+    
     
 def show_category(request, category_name_slug):
     # Create a context dictionary which we can pass
@@ -293,7 +282,8 @@ def some_view(request):
 
 @login_required
 def restricted(request):
-    return HttpResponse("Since you're logged in, you can see this text!")
+    return HttpResponse("Since you're logged in, you can see this text!")
+
 
 @login_required
 def user_logout(request):
